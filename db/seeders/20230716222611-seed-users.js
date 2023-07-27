@@ -1,5 +1,5 @@
 const { faker } = require('@faker-js/faker');
-
+const {hash} = require("bcrypt")
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
@@ -20,14 +20,15 @@ module.exports = {
         users.push({
             name: faker.person.fullName(),
             email: faker.internet.email(),
-            password: faker.internet.password(),
+            password: await hash(faker.internet.password(), 10),
             phone: faker.phone.number(),
             image: faker.image.avatar(),
             balance: faker.number.int({min: 100, max:200}),
             pending_balance: faker.number.int({min: 100, max:200}),
-            false_bids: faker.number.int(0),
-            createdAt: new Date(),
-            updatedAt: new Date()
+            // reset_password_token: faker.string.alphanumeric(10),
+            // reset_password_expires: faker.date.future(),
+            // createdAt: new Date(),
+            // updatedAt: new Date()
         })
     }
     await queryInterface.bulkInsert('Users', users, {})

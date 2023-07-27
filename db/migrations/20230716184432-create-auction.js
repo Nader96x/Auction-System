@@ -9,31 +9,30 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      // reference_number: {
-      //   type: Sequelize.INTEGER,
-      // },
+      name: {
+          allowNull: false,
+          type: Sequelize.STRING,
+      },
       start_date: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      end_date: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+      end_date: Sequelize.DATE,
       entry_fees: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      createdAt: {
-        allowNull: false,
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updatedAt: {
-        allowNull: false,
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
+    },{
+        paranoid:true
     });
   },
   async down(queryInterface, Sequelize) {

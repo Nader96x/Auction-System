@@ -18,16 +18,19 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
-      createdAt: {
-        allowNull: false,
+      reset_password_token: Sequelize.STRING,
+      reset_password_expires: Sequelize.DATE,
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updatedAt: {
-        allowNull: false,
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
+    },{
+        paranoid:true
     });
   },
   async down(queryInterface, Sequelize) {

@@ -9,9 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // belongs to user
-      Transaction.belongsTo(models.User, {
-        foreignKey: "id",
-      });
+
+      this.belongsTo(models.User);
       models.User.hasMany(Transaction, {
         foreignKey: "user_id",
       });
@@ -27,18 +26,28 @@ module.exports = (sequelize, DataTypes) => {
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
+          validate: {
+                isInt: [true, "Amount must be an integer"],
+                min: [0, "Amount must be greater than 0"]
+          }
       },
       method: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       status: {
         type: DataTypes.ENUM("success", "failed", "pending"),
         defaultValue: "pending",
       },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "Transaction",
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+        paranoid: true,
     }
   );
   return Transaction;

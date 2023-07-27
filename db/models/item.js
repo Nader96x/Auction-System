@@ -19,22 +19,18 @@ module.exports = (sequelize, DataTypes) => {
           is: /^[a-zA-Z ]{3,}$/,
         },
       },
-      material: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      color: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      size: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      material:DataTypes.STRING,
+      color: DataTypes.STRING,
+      size: DataTypes.STRING,
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "Item",
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+        paranoid: true,
     }
   );
   return Item;

@@ -30,16 +30,17 @@ module.exports = {
         type: Sequelize.ENUM("success", "failed", "pending"),
         defaultValue: "pending",
       },
-      createdAt: {
-        allowNull: false,
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updatedAt: {
-        allowNull: false,
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
+    },{
+        paranoid:true
     });
   },
   async down(queryInterface, Sequelize) {

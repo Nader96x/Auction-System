@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id",
       });
       //   Item hasMany Item_images
-      models.Item.hasMany(Item_images, {
+      models.Item.hasMany(this, {
         foreignKey: "item_id",
       });
     }
@@ -23,12 +23,26 @@ module.exports = (sequelize, DataTypes) => {
       item_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+            isInt: [true, "Item ID must be an integer"],
+        }
       },
-      image: DataTypes.STRING,
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isUrl: [true, "Image must be a valid URL"],
+        }
+      },
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "Item_images",
+      createdAt: "created_at",
+        updatedAt: "updated_at",
+        paranoid: true,
     }
   );
   return Item_images;
