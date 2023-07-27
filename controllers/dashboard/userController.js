@@ -1,5 +1,6 @@
 // const {User } = require("../../db/models/user");
 const db = require("../../db/models");
+// console.log(Object.keys(db));
 const User = db.User;
 module.exports.getAllUsers = async (req, res, next) => {
   try {
