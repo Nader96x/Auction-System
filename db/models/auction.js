@@ -62,8 +62,7 @@ module.exports = (sequelize, DataTypes) => {
                     }
                 },
             },
-            createdAt: DataTypes.DATE,
-            updatedAt: DataTypes.DATE,
+
             /*items:{
                 type: DataTypes.VIRTUAL,
                 get(){
@@ -87,9 +86,8 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: "Auction",
-            createdAt: "created_at",
-            updatedAt: "updated_at",
-            paranoid: true,
+            timestamps: true,
+            paranoid:true,
         }
     );
 

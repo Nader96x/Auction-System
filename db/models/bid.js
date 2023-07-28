@@ -60,15 +60,13 @@ module.exports = (sequelize, DataTypes) => {
             min: [0, "Auction ID must be greater than 0"]
         }
       },
-        createdAt: DataTypes.DATE,
-        updatedAt: DataTypes.DATE,
+
     },
     {
       sequelize,
       modelName: "Bid",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        paranoid: true,
+        timestamps: true,
+        paranoid:true,
     }
   );
   return Bid;

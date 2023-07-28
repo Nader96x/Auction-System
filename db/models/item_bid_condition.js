@@ -88,14 +88,12 @@ module.exports = (sequelize, DataTypes) => {
         min: [1, "Close Price must be greater than 1"]
       }
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+
   }, {
     sequelize,
     modelName: 'Item_bid_condition',
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-      paranoid: true,
+      timestamps: true,
+      paranoid:true,
   });
   return Item_bid_condition;
 };

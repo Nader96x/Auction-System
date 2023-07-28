@@ -56,15 +56,13 @@ module.exports = (sequelize, DataTypes) => {
             banned_until: DataTypes.DATE,
             reset_password_token: DataTypes.STRING,
             reset_password_expires: DataTypes.DATE,
-            createdAt: DataTypes.DATE,
-            updatedAt: DataTypes.DATE,
+
         },
         {
             sequelize,
             modelName: "User",
-            createdAt: "created_at",
-            updatedAt: "updated_at",
-            paranoid: true,
+            timestamps: true,
+            paranoid:true,
         }
     );
 

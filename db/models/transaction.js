@@ -39,15 +39,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("success", "failed", "pending"),
         defaultValue: "pending",
       },
-        createdAt: DataTypes.DATE,
-        updatedAt: DataTypes.DATE,
+
     },
     {
       sequelize,
       modelName: "Transaction",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        paranoid: true,
+        timestamps: true,
+        paranoid:true,
     }
   );
   return Transaction;

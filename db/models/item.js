@@ -22,15 +22,13 @@ module.exports = (sequelize, DataTypes) => {
       material:DataTypes.STRING,
       color: DataTypes.STRING,
       size: DataTypes.STRING,
-        createdAt: DataTypes.DATE,
-        updatedAt: DataTypes.DATE,
+
     },
     {
       sequelize,
       modelName: "Item",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
-        paranoid: true,
+        timestamps: true,
+        paranoid:true,
     }
   );
   return Item;

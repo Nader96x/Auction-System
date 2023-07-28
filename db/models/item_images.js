@@ -34,15 +34,13 @@ module.exports = (sequelize, DataTypes) => {
             isUrl: [true, "Image must be a valid URL"],
         }
       },
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE,
+
     },
     {
       sequelize,
       modelName: "Item_images",
-      createdAt: "created_at",
-        updatedAt: "updated_at",
-        paranoid: true,
+        timestamps: true,
+        paranoid:true,
     }
   );
   return Item_images;

@@ -44,17 +44,7 @@ module.exports = {
       close_price: {
         type: Sequelize.INTEGER,
       },
-      createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-        onUpdate: Sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-    },{
-        paranoid:true
+
     });
   },
   async down(queryInterface, Sequelize) {
