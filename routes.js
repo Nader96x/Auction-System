@@ -6,7 +6,7 @@ const {_500,_404}=require('./middlewares/errorsMW');
 
 const router = express.Router();
 
-router.use('/admin',dashboardRoute);
+router.use('/dashboard',dashboardRoute);
 router.use('/',websiteRoute);
 
 // Error Handlers

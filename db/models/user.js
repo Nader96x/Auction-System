@@ -50,12 +50,38 @@ module.exports = (sequelize, DataTypes) => {
                     },
                 },
             },
-            image: DataTypes.STRING,
-            balance: DataTypes.INTEGER,
-            pending_balance: DataTypes.INTEGER,
+            image: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    isUrl: [true, "Invalid URL"],
+                }
+            },
+            balance: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0,
+
+            },
+            pending_balance: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0,
+            },
             banned_until: DataTypes.DATE,
-            reset_password_token: DataTypes.STRING,
-            reset_password_expires: DataTypes.DATE,
+            reset_password_token: {
+                type: DataTypes.STRING,
+                exclude: true,
+            },
+            reset_password_expires:
+            {
+                type: DataTypes.DATE,
+                exclude: true,
+            },
+            is_active:{
+                type:DataTypes.VIRTUAL,
+                get(){
+                    return !(this.banned_until > new Date());
+                }
+            }
 
         },
         {
@@ -63,6 +89,33 @@ module.exports = (sequelize, DataTypes) => {
             modelName: "User",
             timestamps: true,
             paranoid:true,
+            defaultScope:{
+                attributes:{
+                    exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+                }
+            },
+            scopes:{
+                secure:{
+                    attributes:{
+                        exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+                    }
+                },
+                withPassword:{
+                    attributes:{
+                        include:['password']
+                    }
+                },
+                withResetPasswordToken:{
+                    attributes:{
+                        include:['reset_password_token','reset_password_expires']
+                    }
+                },
+                withTimestamps:{
+                    attributes:{
+                        include:['createdAt','updatedAt','deletedAt']
+                    }
+                }
+            }
         }
     );
 
@@ -72,7 +125,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     // Instance methods
-    User.checkPassword = async function (password) {
+    User.comparePassword = async function (password) {
         return await bcrypt.compare(password, this.password);
     }
 
