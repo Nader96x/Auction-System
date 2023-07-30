@@ -41,6 +41,13 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Item_images",
         timestamps: true,
         paranoid:true,
+      hooks:{
+        afterDestroy(instance, options) {
+          if(options.force){
+            console.log(instance);
+          }
+        }
+      }
     }
   );
   return Item_images;

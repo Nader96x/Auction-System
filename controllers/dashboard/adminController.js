@@ -3,7 +3,7 @@ const {success} = require("../../utils/responses");
 const {signToken} = require("../../utils/Auth.helper");
 const Factory = require("../../utils/Factory");
 
-const User = db.User;
+const Admin = db.Admin;
 
 /**
  * @route    GET api/v1/dashboard/users
@@ -11,7 +11,7 @@ const User = db.User;
  * @returns  {Array} Array of users
  * @access   Private
  */
-module.exports.getAllUsers = Factory.getAll(User);
+module.exports.getAllUsers = Factory.getAll(Admin);
 
 
 /**
@@ -22,7 +22,7 @@ module.exports.getAllUsers = Factory.getAll(User);
  * @access   Private
  */
 
-module.exports.createUser = Factory.createOne(User)
+module.exports.createUser = Factory.createOne(Admin)
 
 /**
  * @route    GET api/v1/dashboard/users/:id
@@ -32,7 +32,7 @@ module.exports.createUser = Factory.createOne(User)
  * @access   Private
  */
 
-module.exports.getUser = Factory.getOne(User);
+module.exports.getUser = Factory.getOne(Admin);
 
 /**
  * @route    @route    PATCH api/v1/dashboard/users/:id
@@ -43,7 +43,7 @@ module.exports.getUser = Factory.getOne(User);
  * @access   Private
  */
 
-module.exports.updateUser = Factory.updateOne(User)
+module.exports.updateUser = Factory.updateOne(Admin)
 
 /**
  * @route    DELETE api/v1/dashboard/users/:id
@@ -51,7 +51,7 @@ module.exports.updateUser = Factory.updateOne(User)
  * @returns {null} null
  * @access   Private
  */
-module.exports.deleteUser = Factory.deleteOne(User)
+module.exports.deleteUser = Factory.deleteOne(Admin)
 
 /**
  * @route    POST api/v1/dashboard/users/:id
@@ -60,7 +60,7 @@ module.exports.deleteUser = Factory.deleteOne(User)
  * @access   Private
  */
 
-module.exports.restoreUser = Factory.restoreOne(User)
+module.exports.restoreUser = Factory.restoreOne(Admin)
 
 
 /**
@@ -72,7 +72,7 @@ module.exports.restoreUser = Factory.restoreOne(User)
  */
 module.exports.signIn = async ({body:{email,password}}, res, next) => {
     try {
-        const user = await User.findByEmail(email);
+        const user = await Admin.findByEmail(email);
         if(!user) return next(new Error("User not found"));
         const isMatch = await user.comparePassword(password);
         if(!isMatch) return next(new Error("Password is incorrect"));
@@ -98,8 +98,8 @@ module.exports.protect = async (req, res, next) => {
         const token = authorization.split(" ")[1];
         if(!token) return next(new Error("Invalid token"));
 
-        const decoded_token = await User.verifyToken(token);
-        const user = await User.findByPk(decoded_token.id);
+        const decoded_token = await Admin.verifyToken(token);
+        const user = await Admin.findByPk(decoded_token.id);
         if(!user) return next(new Error("User not found"));
         req.user = user;
         res.status(200).json(success(user));
