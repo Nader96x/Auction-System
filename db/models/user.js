@@ -1,6 +1,6 @@
 "use strict";
 const {Model} = require("sequelize");
-const bcrypt = require("bcrypt");
+const useBcrypt = require("sequelize-bcrypt");
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         /**
@@ -38,9 +38,7 @@ module.exports = (sequelize, DataTypes) => {
                         // args: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/],
                     },
                 },
-                async set(value) {
-                    this.setDataValue("password", await bcrypt.hash(value, 10));
-                },
+
             },
             phone: {
                 type: DataTypes.STRING,
@@ -71,8 +69,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 exclude: true,
             },
-            reset_password_expires:
-            {
+            reset_password_expires:{
                 type: DataTypes.DATE,
                 exclude: true,
             },
@@ -125,9 +122,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     // Instance methods
-    User.comparePassword = async function (password) {
-        return await bcrypt.compare(password, this.password);
-    }
 
+    useBcrypt(User);
     return User;
 };

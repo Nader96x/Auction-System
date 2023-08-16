@@ -1,5 +1,6 @@
 "use strict";
 const {Model} = require("sequelize");
+const {slugifyModel} = require("sequelize-slugify");
 module.exports = (sequelize, DataTypes) => {
     class Auction extends Model {
         /**
@@ -96,7 +97,14 @@ module.exports = (sequelize, DataTypes) => {
 
     // Instance Methods
 
-
+    slugifyModel(Auction, {
+        source: ["name"],
+        slugOptions: { lower: true },
+        column: "slug",
+        incrementalSeparator: "-",
+        unique: true,
+        suffixSource: ['timestamp']
+    });
 
     return Auction;
 };

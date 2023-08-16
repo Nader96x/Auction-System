@@ -1,4 +1,5 @@
 const {success} = require("./responses");
+const {Op} = require("sequelize");
 
 module.exports.getOne = (Model) =>
     async ({params : {id}}, res, next) => {
@@ -14,8 +15,44 @@ module.exports.getOne = (Model) =>
 module.exports.getAll = (Model) =>
     async (req, res, next) => {
         try {
-            const result = await Model.findAll();
-            res.status(200).json(success(result));
+            const { page = 1, limit = 10, sortBy = 'id',search='', filterBy = {},fields='' } = req.query;
+            let {sortOrder = 'asc'}=req.query;
+
+            if(!["ASC","DESC"].includes(sortOrder.toUpperCase())) sortOrder = "ASC";
+            const selectedFields = fields ? fields.split(',') : undefined;
+            const order = [[sortBy, sortOrder.toUpperCase()]];
+            const offset = (page - 1) * limit;
+
+            const searchConditions = search
+                ? {
+                    [Op.or]: [
+                        { name: { [Op.iLike]: `%${search}%` } },
+                        { email: { [Op.iLike]: `%${search}%` } },
+                    ],
+                }
+                : {};
+            //filterBy={"name":"Nader"}
+            const whereConditions = { ...filterBy, ...searchConditions };
+
+            const result = await Model.findAndCountAll({
+                where: whereConditions,
+                limit: parseInt(limit),
+                attributes: selectedFields?.length > 0 ? selectedFields : undefined,
+                offset: offset,
+                order: order,
+            });
+            const totalPages = Math.ceil(result.count / limit);
+            res.status(200).json(success(
+                result.rows,
+                {
+                    pagination: {
+                        currentPage: parseInt(page),
+                        totalPages: totalPages,
+                        totalItems: result.count,
+                        },
+                    count: result.count,
+                }
+            ));
         } catch (err) {
             next(err);
         }
@@ -51,7 +88,7 @@ module.exports.deleteOne = (Model) =>
         }
     }
 
-module.exports.deleteOneHard = (Model) =>
+module.exports.deleteOnePermanently = (Model) =>
     async ({params : {id}}, res, next) => {
         try {
             const result = await Model.destroy({where : {id}, force:true});

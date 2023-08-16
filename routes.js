@@ -2,7 +2,7 @@ const express = require('express');
 
 const dashboardRoute=require('./routes/dashboardRoute');
 const websiteRoute=require('./routes/websiteRoute');
-const {_500,_404}=require('./middlewares/errorsMW');
+const {_500,_404}=require('./MiddleWares/errorsMW');
 
 const router = express.Router();
 

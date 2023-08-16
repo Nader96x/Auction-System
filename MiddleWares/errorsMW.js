@@ -12,15 +12,21 @@ module.exports._500 = (err, req, res, next) => {
     // console.log("CastError");
     err.message = `Invalid ${err.path}: ${err.value}`;
     err.statusCode = 422;
-  } else if (err.name === "MongoError" && err.code === 11000) {
-    // console.log("MongoError", Object.keys(err.keyPattern));
-    err.message = {};
-    Object.keys(err.keyPattern).forEach((key) => {
-      err.message[key] = `${key} already exists`;
+  } else if (err.name === 'SequelizeValidationError') {
+    err.message = {}; // Create an object to hold validation error messages
+    err.errors.forEach((e) => {
+      err.message[e.path] = e.message; // Store validation error messages by field name
     });
-    // console.log(err.message);
-    // err.message = `${Object.keys(err.keyPattern)} already exists`;
-    err.statusCode = 422;
+    err.statusCode = 422; // Unprocessable Entity
+  } else if (err.name === 'SequelizeDatabaseError') {
+    err.message = `Database error: ${err.message}`;
+    err.statusCode = 500; // Internal Server Error
+  } else if (err.name === 'SequelizeUniqueConstraintError') {
+    err.message = {}; // Create an object to hold unique constraint error messages
+    err.errors.forEach((e) => {
+      err.message[e.path] = `${e.path} already exists`;
+    });
+    err.statusCode = 422; // Unprocessable Entity
   } else if (err.name === "TokenExpiredError") {
     err.message = "Session has expired, Please Login Again";
     err.statusCode = 401;

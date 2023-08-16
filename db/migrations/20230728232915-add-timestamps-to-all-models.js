@@ -17,10 +17,10 @@ module.exports = {
       deletedAt: Sequelize.DATE,
     };
     // 1st get all tables names
-    let tables = await queryInterface.showAllTables()//;
+    let tables = await queryInterface.showAllTables();
     tables = tables.filter(name=>name!=="SequelizeMeta")
     // console.log(tables)
-    // 2nd applay this for each table
+    // 2nd apply this for each table
     tables.forEach(table=>{
       // console.log(table)
         Object.keys(changes).forEach(change=>{

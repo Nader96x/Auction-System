@@ -13,14 +13,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      material:
-        Sequelize.STRING,
-
+      material:Sequelize.STRING,
       color: Sequelize.STRING,
-
       size:Sequelize.STRING,
-
-
     });
   },
   async down(queryInterface, Sequelize) {

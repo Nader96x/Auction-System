@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const bcrypt = require("bcrypt");
+const useBcrypt = require('sequelize-bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     /**
@@ -19,9 +19,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
           validate: {
-              isAlphanumeric: [true, "Name must be only letters and numbers"],
-              min:[3, "Name must be at least 3 characters long with only letters and numbers"],
-              max:[255, "Name must be at most 255 characters long with only letters and numbers"],
+              is:/^[A-Z ]{3,255}$/i,
           },
       },
       email: {
@@ -29,18 +27,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          isEmail: [true, "Email must be a valid email address"],
+          isEmail: true,
         },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            is: [ /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, "Password must be at least 8 characters long with at least one number, one lowercase and one uppercase letter"]
+            is:  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_]{8,}$/
         },
-        async set(value) {
-          this.setDataValue("password", await bcrypt.hash(value, 10));
-        },
+
       },
       reset_password_token: DataTypes.STRING,
       reset_password_expires: DataTypes.DATE,
@@ -53,15 +49,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+
   // Static methods
   Admin.prototype.findByEmail = async function (email) {
     return await Admin.findOne({ where: { email } });
   }
 
-  // Instance methods
-  Admin.checkPassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
-  }
+  useBcrypt(Admin);
 
   return Admin;
 };

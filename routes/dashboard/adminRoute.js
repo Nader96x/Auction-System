@@ -3,13 +3,13 @@
 
 const express = require("express");
 const {
-  getAllUsers,
-  createUser,
-    getUser,
-    deleteUser,
-    updateUser,
-    restoreUser,
-} = require("../../controllers/dashboard/userController");
+  getAll,
+    createOne,
+    getOne,
+    updateOne,
+    deleteOne,
+    restoreOne,
+} = require("../../controllers/dashboard/adminController");
 
 const router = express.Router();
 
@@ -21,16 +21,15 @@ router.route("/")
      * @returns  {Array} Array of users
      * @access   Private
      */
-    .get(getAllUsers)
-    .post(createUser);
+    .get(getAll)
+    .post(createOne);
 
 router.route("/:id")
     // .all(protect)
-    .get(getUser)
-    .delete(deleteUser)
-    .patch(updateUser)
-    . post(restoreUser)
-;
+    .get(getOne)
+    .patch(updateOne)
+    .delete(deleteOne)
+    .post(restoreOne);
 
 
 module.exports = router;
