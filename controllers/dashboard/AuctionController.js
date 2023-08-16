@@ -1,8 +1,6 @@
-const db = require("../../db/models");
+const {Auction} = require("../../db/models");
 const Factory = require("../../utils/Factory")
 
-
-const Auction = db.Auction;
 
 module.exports.getAll = Factory.getAll(Auction);
 

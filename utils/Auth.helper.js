@@ -11,7 +11,7 @@ exports.signToken = (payload) => {
 
 /**
  * @desc    Decode JWT token
- * @param token
+ * @param   {string} token - token to decode
  * @return {object} {id: Number,iat: Number,exp: Number}
  */
 exports.verifyToken = (token) => {

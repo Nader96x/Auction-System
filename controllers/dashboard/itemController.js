@@ -1,10 +1,6 @@
-const db = require("../../db/models");
-const {success} = require("../../utils/responses");
+const {Item,ItemImages} = require("../../db/models");
 const Factory = require("../../utils/Factory")
 
-
-const Item = db.Item;
-const ItemImages = db.Item_images;
 
 module.exports.getAll = Factory.getAll(Item);
 

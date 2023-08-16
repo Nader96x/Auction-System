@@ -6,15 +6,17 @@ const {
     updateOne,
     deleteOne,
     restoreOne,
-} = require("../../controllers/dashboard/adminController");
+} = require("../../controllers/dashboard/itemController");
 
 const router = express.Router();
 
 router.route("/")
+    // .all(protect)
     .get(getAll)
     .post(createOne);
 
 router.route("/:id")
+    // .all(protect)
     .get(getOne)
     .patch(updateOne)
     .delete(deleteOne)

@@ -117,7 +117,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     // Static methods
-    User.prototype.findByEmail = async function (email) {
+    User.findByEmail = async function (email) {
         return await User.findOne({ where: { email } });
     }
 

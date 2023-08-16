@@ -30,6 +30,9 @@ module.exports._500 = (err, req, res, next) => {
   } else if (err.name === "TokenExpiredError") {
     err.message = "Session has expired, Please Login Again";
     err.statusCode = 401;
+  }else if (err.name === "JsonWebTokenError") {
+    err.message = "Authentication Error, Please Login Again";
+    err.statusCode = 401;
   } else {
     console.log("err");
   }

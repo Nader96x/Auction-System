@@ -46,13 +46,40 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Admin",
         timestamps: true,
         paranoid:true,
+        defaultScope:{
+            attributes:{
+                exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+            }
+        },
+        scopes:{
+            secure:{
+                attributes:{
+                    exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+                }
+            },
+            withPassword:{
+                attributes:{
+                    include:['password']
+                }
+            },
+            withResetPasswordToken:{
+                attributes:{
+                    include:['reset_password_token','reset_password_expires']
+                }
+            },
+            withTimestamps:{
+                attributes:{
+                    include:['createdAt','updatedAt','deletedAt']
+                }
+            }
+        }
     }
   );
 
 
   // Static methods
-  Admin.prototype.findByEmail = async function (email) {
-    return await Admin.findOne({ where: { email } });
+  Admin.findByEmail = async function (email) {
+    return await Admin.scope(["withPassword","defaultScope"]).findOne({ where: { email } });
   }
 
   useBcrypt(Admin);

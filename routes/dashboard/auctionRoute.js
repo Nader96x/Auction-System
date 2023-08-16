@@ -1,14 +1,24 @@
-const express = require('express');
-
+const express = require("express");
+const {
+    getAll,
+    createOne,
+    getOne,
+    updateOne,
+    deleteOne,
+    restoreOne,
+} = require("../../controllers/dashboard/AuctionController");
 
 const router = express.Router();
 
-router.get('/',(req,res,next)=>{
-    res.status(200).json({
-        status: 'success',
-        message: 'This is the dashboard homepage'
-    });
-});
+router.route("/")
+    .get(getAll)
+    .post(createOne);
+
+router.route("/:id")
+    .get(getOne)
+    .patch(updateOne)
+    .delete(deleteOne)
+    .post(restoreOne);
 
 
 module.exports = router;

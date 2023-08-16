@@ -1,9 +1,5 @@
-const db = require("../../db/models");
-const {success} = require("../../utils/responses");
-const {signToken} = require("../../utils/Auth.helper");
+const {Admin} = require("../../db/models");
 const Factory = require("../../utils/Factory");
-
-const Admin = db.Admin;
 
 
 module.exports.getAll = Factory.getAll(Admin);
