@@ -1,4 +1,4 @@
-const {Item,ItemImages} = require("../../db/models");
+const {Item, ItemImages} = require("../../db/models");
 const Factory = require("../../utils/Factory")
 
 

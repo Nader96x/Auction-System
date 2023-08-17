@@ -1,52 +1,52 @@
 "use strict";
-const { Model } = require("sequelize");
+const {Model} = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Transaction extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // belongs to user
+    class Transaction extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // belongs to user
 
-      this.belongsTo(models.User);
-      models.User.hasMany(Transaction, {
-        foreignKey: "user_id",
-      });
+            this.belongsTo(models.User);
+            models.User.hasMany(Transaction, {
+                foreignKey: "user_id",
+            });
+        }
     }
-  }
 
-  Transaction.init(
-    {
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      amount: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-          validate: {
-                isInt: [true, "Amount must be an integer"],
-                min: [0, "Amount must be greater than 0"]
-          }
-      },
-      method: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.ENUM("success", "failed", "pending"),
-        defaultValue: "pending",
-      },
+    Transaction.init(
+        {
+            user_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            amount: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    isInt: [true, "Amount must be an integer"],
+                    min: [0, "Amount must be greater than 0"]
+                }
+            },
+            method: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            status: {
+                type: DataTypes.ENUM("success", "failed", "pending"),
+                defaultValue: "pending",
+            },
 
-    },
-    {
-      sequelize,
-      modelName: "Transaction",
-        timestamps: true,
-        paranoid:true,
-    }
-  );
-  return Transaction;
+        },
+        {
+            sequelize,
+            modelName: "Transaction",
+            timestamps: true,
+            paranoid: true,
+        }
+    );
+    return Transaction;
 };

@@ -7,18 +7,25 @@ const {
     deleteOne,
     restoreOne,
 } = require("../../controllers/dashboard/itemController");
+const {
+    validateCreate,
+    validateUpdate,
+    checkParamsId
+} = require("../../controllers/dashboard/validation/item.validator");
+
 
 const router = express.Router();
 
 router.route("/")
     // .all(protect)
     .get(getAll)
-    .post(createOne);
+    .post(validateCreate,createOne);
 
 router.route("/:id")
     // .all(protect)
+    .all(checkParamsId)
     .get(getOne)
-    .patch(updateOne)
+    .patch(validateUpdate,updateOne)
     .delete(deleteOne)
     .post(restoreOne);
 

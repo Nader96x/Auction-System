@@ -1,4 +1,4 @@
-const {sequelize:db} = require('./db/models/index');
+const {sequelize: db} = require('./db/models/index');
 const app = require('./app');
 const port = process.env.PORT || 3000;
 

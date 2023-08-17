@@ -7,16 +7,22 @@ const {
     deleteOne,
     restoreOne,
 } = require("../../controllers/dashboard/AuctionController");
+const {
+    validateCreate,
+    validateUpdate,
+    checkParamsId
+} = require("../../controllers/dashboard/validation/auction.validator");
 
 const router = express.Router();
 
 router.route("/")
     .get(getAll)
-    .post(createOne);
+    .post(validateCreate,createOne);
 
 router.route("/:id")
+    .all(checkParamsId)
     .get(getOne)
-    .patch(updateOne)
+    .patch(validateUpdate,updateOne)
     .delete(deleteOne)
     .post(restoreOne);
 

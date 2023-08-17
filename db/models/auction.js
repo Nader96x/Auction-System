@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isAlphanumeric:{
-                      locale: "en-US",
-                      min: 3,
-                      max: 255,
-                      msg: "Name must be at least 3 characters long with only letters and numbers",
+                    isAlphanumeric: {
+                        locale: "en-US",
+                        min: 3,
+                        max: 255,
+                        msg: "Name must be at least 3 characters long with only letters and numbers",
                     }
                 }
             },
@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
-                    isDate:[true, "Start date must be a valid date"],
-                    isAfter:[ new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), "Start date must be at least 24 hours from now"],
+                    isDate: [true, "Start date must be a valid date"],
+                    isAfter: [new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), "Start date must be at least 24 hours from now"],
                 },
             },
             end_date: {
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             sequelize,
             modelName: "Auction",
             timestamps: true,
-            paranoid:true,
+            paranoid: true,
         }
     );
 
@@ -99,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
 
     slugifyModel(Auction, {
         source: ["name"],
-        slugOptions: { lower: true },
+        slugOptions: {lower: true},
         column: "slug",
         incrementalSeparator: "-",
         unique: true,

@@ -3,13 +3,19 @@
 
 const express = require("express");
 const {
-  getAll,
+    getAll,
     createOne,
     getOne,
     updateOne,
     deleteOne,
     restoreOne
 } = require("../../controllers/dashboard/userController");
+const {single} = require("../../utils/cloudinary-multer");
+const {
+    validateCreate,
+    validateUpdate,
+    checkParamsId,
+} = require("../../controllers/dashboard/validation/user.validator");
 
 const router = express.Router();
 
@@ -22,14 +28,15 @@ router.route("/")
      * @access   Private
      */
     .get(getAll)
-    .post(createOne);
+    .post(single("image"),validateCreate,createOne);
 
 router.route("/:id")
     // .all(protect)
+    .all(checkParamsId)
     .get(getOne)
     .delete(deleteOne)
-    .patch(updateOne)
-    . post(restoreOne)
+    .patch(single("image"),validateUpdate,updateOne)
+    .post(restoreOne)
 ;
 
 

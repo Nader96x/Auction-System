@@ -7,7 +7,11 @@ const {
     deleteOne,
     restoreOne,
 } = require("../../controllers/dashboard/adminController");
-
+const {
+    validateCreate,
+    validateUpdate,
+    checkParamsId
+} = require("../../controllers/dashboard/validation/admin.validator");
 const throwErrorIfSameUser = (req, res, next) => {
     if (req.user.id === req.params.id) {
         return next({
@@ -22,12 +26,13 @@ const router = express.Router();
 
 router.route("/")
     .get(getAll)
-    .post(createOne);
+    .post(validateCreate,createOne);
 
 router.route("/:id")
+    .all(checkParamsId)
     .get(getOne)
-    .patch(updateOne)
-    .delete(throwErrorIfSameUser,deleteOne)
+    .patch(validateUpdate,updateOne)
+    .delete(throwErrorIfSameUser, deleteOne)
     .post(restoreOne);
 
 

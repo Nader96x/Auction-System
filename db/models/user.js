@@ -34,9 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             password: {
                 type: DataTypes.STRING,
                 validate: {
-                    is: {
-                        // args: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/],
-                    },
+                    is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_])[0-9a-zA-Z!@#$%^&*_]{8,}$/
                 },
 
             },
@@ -65,17 +63,17 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 0,
             },
             banned_until: DataTypes.DATE,
-            reset_password_token: {
-                type: DataTypes.STRING,
-                exclude: true,
-            },
-            reset_password_expires:{
-                type: DataTypes.DATE,
-                exclude: true,
-            },
-            is_active:{
-                type:DataTypes.VIRTUAL,
-                get(){
+            // reset_password_token: {
+            //     type: DataTypes.STRING,
+            //     exclude: true,
+            // },
+            // reset_password_expires: {
+            //     type: DataTypes.DATE,
+            //     exclude: true,
+            // },
+            is_active: {
+                type: DataTypes.VIRTUAL,
+                get() {
                     return !(this.banned_until > new Date());
                 }
             }
@@ -85,31 +83,31 @@ module.exports = (sequelize, DataTypes) => {
             sequelize,
             modelName: "User",
             timestamps: true,
-            paranoid:true,
-            defaultScope:{
-                attributes:{
-                    exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+            paranoid: true,
+            defaultScope: {
+                attributes: {
+                    exclude: ['password', 'updatedAt', 'deletedAt', "reset_password_token", "reset_password_expires"]
                 }
             },
-            scopes:{
-                secure:{
-                    attributes:{
-                        exclude:['password','updatedAt','deletedAt',"reset_password_token","reset_password_expires"]
+            scopes: {
+                secure: {
+                    attributes: {
+                        exclude: ['password', 'updatedAt', 'deletedAt', "reset_password_token", "reset_password_expires"]
                     }
                 },
-                withPassword:{
-                    attributes:{
-                        include:['password']
+                withPassword: {
+                    attributes: {
+                        include: ['password']
                     }
                 },
-                withResetPasswordToken:{
-                    attributes:{
-                        include:['reset_password_token','reset_password_expires']
+                withResetPasswordToken: {
+                    attributes: {
+                        include: ['reset_password_token', 'reset_password_expires']
                     }
                 },
-                withTimestamps:{
-                    attributes:{
-                        include:['createdAt','updatedAt','deletedAt']
+                withTimestamps: {
+                    attributes: {
+                        include: ['createdAt', 'updatedAt', 'deletedAt']
                     }
                 }
             }
@@ -118,7 +116,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // Static methods
     User.findByEmail = async function (email) {
-        return await User.findOne({ where: { email } });
+        return await User.findOne({where: {email}});
     }
 
     // Instance methods
