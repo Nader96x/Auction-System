@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      ItemImages.belongsTo(models.Item, {
+      this.belongsTo(models.Item,{
         foreignKey: "id",
       });
-      //   Item hasMany Item_images
       models.Item.hasMany(this, {
         foreignKey: "item_id",
+        as: "images"
       });
     }
   }
@@ -24,21 +24,25 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            isInt: [true, "Item ID must be an integer"],
+            isInt: true,
         }
       },
       image: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isUrl: [true, "Image must be a valid URL"],
+            isUrl: true,
         }
       },
 
     },
     {
       sequelize,
-      modelName: "Item_images",
+      modelName: "ItemImages",
+      tableName: "Item_images",
+      defaultScope:{
+        attributes: { exclude: ["deletedAt",'updatedAt','createdAt'] },
+      },
         timestamps: true,
         paranoid:true,
       hooks:{

@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.use("/login", logIn(Admin));
 
-router.use(protect(Admin));
+// router.use(protect(Admin));
 
 router.use("/users", usersRoute);
 router.use("/admins", adminsRoute);

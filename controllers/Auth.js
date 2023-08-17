@@ -17,9 +17,11 @@ const {Admin} = require("../db/models");
  */
 module.exports.logIn = (Model) => async ({body:{email,password}}, res, next) => {
         const user = await Model.findByEmail(email);
-        if(!user) return next(new Error(`${Model.name} not found`));
+        // if(!user) return next(new Error(`${Model.name} not found`));
+        if(!user) return next(new Error(`mail or password is incorrect1`));
         const isMatch = await user.authenticate(password);
-        if(!isMatch) return next(new Error(`${Model.name}'s password is incorrect`));
+        // if(!isMatch) return next(new Error(`${Model.name}'s password is incorrect`));
+        if(!isMatch) return next(new Error(`mail or password is incorrect2`));
         delete user.dataValues.password;
         const token = signToken({id:user.id});
         res.status(200).json(success(user,{token}));
@@ -33,7 +35,6 @@ module.exports.logIn = (Model) => async ({body:{email,password}}, res, next) => 
  * @access   Private
  */
 module.exports.protect = (Model)=>async (req, res, next) => {
-    console.log("protect")
         const authorization = req.header("authorization");
         if(!authorization) return next(new Error("No authorization header token found"));
         if (!authorization.startsWith("Bearer ")) return next(new Error("Invalid authorization token"));
@@ -41,7 +42,7 @@ module.exports.protect = (Model)=>async (req, res, next) => {
         if(!token) return next(new Error("Invalid authorization token"));
         const decoded_token = verifyToken(token);
         const user = await Model.findByPk(decoded_token.id);
-        if(!user) return next(new Error(`${Model.name} not found`));
+        if(!user) return next(new Error(`this ${Model.name} not found anymore.`));
         req.user = user;
         next();
 }

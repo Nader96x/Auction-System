@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const {slugifyModel} = require("sequelize-slugify");
+const {ItemImages} = require("./index");
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     /**
@@ -17,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-zA-Z ]{3,}$/,
+          is: /^[a-zA-Z0-9 ]{3,}$/,
         },
       },
       material:DataTypes.STRING,
@@ -27,12 +28,28 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true,
         },
+        /*images: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                return this.getDataValue("ItemImages")?.map((image) => {
+                    return {
+                        id: image.id,
+                        image: image.image,
+                        item_id: image.item_id,
+                        };
+                }) || [];
+            }
+        }*/
+
     },
     {
       sequelize,
       modelName: "Item",
         timestamps: true,
         paranoid:true,
+        defaultScope: {
+            include: 'images',
+        },
         getterMethods: {
             timestamp() {
                 return Date.now();

@@ -7,7 +7,7 @@
   "description": "",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon .",
+    "dev": "nodemon . --trace-warnings",
     "migrate": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
