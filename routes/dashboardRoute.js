@@ -4,12 +4,15 @@ const usersRoute = require("./dashboard/userRoute");
 const adminsRoute = require("./dashboard/adminRoute");
 const itemsRoute = require("./dashboard/itemsRoute");
 
-const {protect,logIn} = require("../controllers/Auth");
+const {protect,logIn,resetPassword,confirmResetPassword} = require("../controllers/Auth");
 const {Admin} = require("../db/models");
 
 const router = express.Router();
 
-router.use("/login", logIn(Admin));
+router.post("/login", logIn(Admin));
+router.post("/resetPassword", resetPassword(Admin));
+router.post("/confirmResetPassword", confirmResetPassword(Admin));
+
 
 // router.use(protect(Admin));
 

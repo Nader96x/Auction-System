@@ -3,10 +3,11 @@ const jwt = require("jsonwebtoken");
 /**
  * @desc    Sign JWT token
  * @param {object} payload - payload to sign
+ * @param {string} expiresIn - expire time {default: process.env.JWT_EXPIRE
  * @return {string} token
  */
-exports.signToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE});
+exports.signToken = (payload,expiresIn=process.env.JWT_EXPIRE) => {
+    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn });
 }
 
 /**

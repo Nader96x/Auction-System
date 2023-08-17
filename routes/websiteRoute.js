@@ -9,7 +9,7 @@ const router = express.Router();
 router.use("/login", logIn(User));
 router.use('/auctions',auctionRoute);
 
-router.use(protect(User));
+// router.use(protect(User));
 
 
 module.exports = router;
